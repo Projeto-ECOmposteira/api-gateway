@@ -10,19 +10,30 @@ import json
 
 @api_view(["POST"])
 def register(request):
-    url = "{base_user_url}{params}".format(
-        base_user_url = config('USER_BASE_URL'), 
-        params = "/api/user/register/"
-    )
-
     data = {
         "username": request.POST.get("username"),
         "email": request.POST.get("username"),
         "password": request.POST.get("password"),
         "password2": request.POST.get("password2"),
         "first_name": request.POST.get("first_name"),
-        "last_name": request.POST.get("last_name")
+        "last_name": request.POST.get("last_name"),
+        "phone_number": request.POST.get("phone_number"),
     }
+
+    if request.POST.get("register_type") == 'producer':
+        url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/register_producer/"
+        )
+    else:
+        url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/register_market/"
+        )
+        data["owner_phone_number"] = request.POST.get("owner_phone_number")
+        data["cnpj"] = request.POST.get("cnpj")
+        data["cep"] = request.POST.get("cep")
+        data["comercial_name"] = request.POST.get("comercial_name")   
 
     return api_redirect(url, data)
 
