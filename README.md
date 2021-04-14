@@ -3,3 +3,5 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9f136b63b2056c9eb904/test_coverage)](https://codeclimate.com/github/Projeto-ECOmposteira/api-gateway/test_coverage)
 
 # api-gateway
+
+[Documentação](https://github.com/Projeto-ECOmposteira/documentacao)
