@@ -31,7 +31,7 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS', default='*')]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # External
+    'corsheaders',
     'rest_framework',
 
     # Apps
+    'gateway',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +61,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 ROOT_URLCONF = 'api_gateway.urls'
 
