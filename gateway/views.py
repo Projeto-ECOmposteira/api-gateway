@@ -8,6 +8,8 @@ from rest_framework.response import Response
 import requests
 import json
 
+SERVER_COMMUNICATION_ERROR = 'Nao foi possivel se comunicar com o servidor'
+
 @api_view(["POST"])
 def register(request):
     url = "{base_user_url}{params}".format(
@@ -76,12 +78,12 @@ def password_recovery(request):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
 
     except:
         return Response(
-            {'error': 'Nao foi possivel se comunicar com o servidor'},
+            {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
 
@@ -111,12 +113,12 @@ def password_reset(request, user, token):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
 
     except:
         return Response(
-            {'error': 'Nao foi possivel se comunicar com o servidor'},
+            {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
     
@@ -131,8 +133,8 @@ def api_redirect(url, data, header = None):
             return Response(data=response_json, status=response.status_code)
         except:
             return Response(response, status=response.status_code)
-    except:
+    except Exception:
         return Response(
-            {'error': 'Nao foi possivel se comunicar com o servidor'},
+            {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
