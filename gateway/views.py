@@ -84,6 +84,41 @@ def password_recovery(request):
             {'error': 'Nao foi possivel se comunicar com o servidor'},
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+@api_view(["POST"])
+def password_reset(request, user, token):
+    url = "{base_user_url}{params}".format(
+        base_user_url = config('USER_BASE_URL'), 
+        params = "/api/user/password_recovery/reset/{user}/{token}/".format(user = user, token = token)
+    )
+
+    # Data should have password, password2
+    try:
+        _session = requests.Session()
+
+        _session.get(url)
+
+        data = request.data
+        data['csrfmiddlewaretoken'] = _session.cookies['csrftoken']
+
+        url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/password_recovery/reset/{user}/set-password/".format(user = user)
+        )
+
+        response = _session.post(url, data=data)
+
+        try:
+            response_json = response.json()
+            return Response(data=response_json, status=response.status_code)
+        except:
+            return Response(response, status=response.status_code)
+
+    except:
+        return Response(
+            {'error': 'Nao foi possivel se comunicar com o servidor'},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
     
 def api_redirect(url, data, header = None):
     try:
