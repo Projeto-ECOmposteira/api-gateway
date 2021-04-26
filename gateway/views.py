@@ -81,7 +81,7 @@ def password_recovery(request):
         except Exception:
             return Response(response, status=response.status_code)
 
-    except:
+    except Exception:
         return Response(
             {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
