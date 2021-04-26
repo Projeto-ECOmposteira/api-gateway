@@ -39,7 +39,7 @@ def check_token(request):
 
     # Data should have acces-token, refresh-token
 
-    response = api_redirect(url, None, {'Authorization': 'Bearer {token}'.format(request.data.get(token = "acces-token"))})
+    response = api_redirect(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("acces-token"))})
 
     if response.status_code != 200:
         url = "{base_user_url}{params}".format(
