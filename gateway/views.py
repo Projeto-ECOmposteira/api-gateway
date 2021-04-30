@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from decouple import config
 from rest_framework.status import (
-    HTTP_500_INTERNAL_SERVER_ERROR
+    HTTP_500_INTERNAL_SERVER_ERROR,
+    HTTP_400_BAD_REQUEST
 )
 from rest_framework.response import Response
 import requests
@@ -110,11 +111,16 @@ def password_reset(request, user, token):
 
         response = _session.post(url, data=data)
 
+        status = response.status_code
+
+        if (response.text.find('class="errorlist"') >= 0):
+            status = HTTP_400_BAD_REQUEST
+
         try:
             response_json = response.json()
-            return Response(data=response_json, status=response.status_code)
+            return Response(data=response_json, status=status)
         except Exception:
-            return Response(response, status=response.status_code)
+            return Response(response, status=status)
 
     except:
         return Response(
