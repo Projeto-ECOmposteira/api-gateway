@@ -2,11 +2,14 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from decouple import config
 from rest_framework.status import (
-    HTTP_500_INTERNAL_SERVER_ERROR
+    HTTP_500_INTERNAL_SERVER_ERROR,
+    HTTP_400_BAD_REQUEST
 )
 from rest_framework.response import Response
 import requests
 import json
+
+SERVER_COMMUNICATION_ERROR = 'Nao foi possivel se comunicar com o servidor'
 
 @api_view(["POST"])
 def register(request):
@@ -28,7 +31,7 @@ def login(request):
 
     # Data should have username, password
 
-    return api_redirect(url, request.POST)
+    return api_redirect(url, request.data)
 
 @api_view(["POST"])
 def check_token(request):
@@ -39,7 +42,7 @@ def check_token(request):
 
     # Data should have acces-token, refresh-token
 
-    response = api_redirect(url, None, {'Authorization': 'Bearer {}'.format(request.POST.get("acces-token"))})
+    response = api_redirect(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("acces-token"))})
 
     if response.status_code != 200:
         url = "{base_user_url}{params}".format(
@@ -48,12 +51,82 @@ def check_token(request):
         )
 
         data = {
-            "refresh": request.POST.get("refresh-token")
+            "refresh": request.data.get("refresh-token")
         }
 
         return api_redirect(url, data)
     else:
         return response
+
+@api_view(["POST"])
+def password_recovery(request):
+    url = "{base_user_url}{params}".format(
+        base_user_url = config('USER_BASE_URL'), 
+        params = "/api/user/password_recovery/"
+    )
+
+    # Data should have email
+    try:
+        _session = requests.Session()
+
+        _session.get(url)
+
+        data = request.data
+        data['csrfmiddlewaretoken'] = _session.cookies['csrftoken']
+
+        response = _session.post(url, data=data)
+
+        try:
+            response_json = response.json()
+            return Response(data=response_json, status=response.status_code)
+        except Exception:
+            return Response(response, status=response.status_code)
+
+    except Exception:
+        return Response(
+            {'error': SERVER_COMMUNICATION_ERROR},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(["POST"])
+def password_reset(request, user, token):
+    url = "{base_user_url}{params}".format(
+        base_user_url = config('USER_BASE_URL'), 
+        params = "/api/user/password_recovery/reset/{user}/{token}/".format(user = user, token = token)
+    )
+
+    # Data should have password, password2
+    try:
+        _session = requests.Session()
+
+        _session.get(url)
+
+        data = request.data
+        data['csrfmiddlewaretoken'] = _session.cookies['csrftoken']
+
+        url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/password_recovery/reset/{user}/set-password/".format(user = user)
+        )
+
+        response = _session.post(url, data=data)
+
+        status = response.status_code
+
+        if (response.text.find('class="errorlist"') >= 0):
+            status = HTTP_400_BAD_REQUEST
+
+        try:
+            response_json = response.json()
+            return Response(data=response_json, status=status)
+        except Exception:
+            return Response(response, status=status)
+
+    except:
+        return Response(
+            {'error': SERVER_COMMUNICATION_ERROR},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
     
 def api_redirect(url, data, header = None):
     try:
@@ -65,9 +138,9 @@ def api_redirect(url, data, header = None):
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
         except:
-            return Response(response)
-    except:
+            return Response(response, status=response.status_code)
+    except Exception:
         return Response(
-            {'error': 'Nao foi possivel se comunicar com o servidor'},
+            {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
