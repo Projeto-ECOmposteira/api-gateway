@@ -128,12 +128,38 @@ def password_reset(request, user, token):
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
     
+@api_view(["GET"])
+def get_producers(request, id):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/producers/"
+        )
+    if id:
+        url = url + id + '/'
+
+    return api_redirect_get(url, request.data)
+
+
 def api_redirect(url, data, header = None):
     try:
         if header:
             response = requests.get(url, headers=header)
         else:
             response = requests.post(url, data=data)
+        try:
+            response_json = response.json()
+            return Response(data=response_json, status=response.status_code)
+        except:
+            return Response(response, status=response.status_code)
+    except Exception:
+        return Response(
+            {'error': SERVER_COMMUNICATION_ERROR},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+def api_redirect_get(url, data, header = None):
+    try:
+        response = requests.get(url)
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)

@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
@@ -7,4 +8,5 @@ urlpatterns = [
     path('check_token/', views.check_token, name='check_token'),
     path('password_recovery/', views.password_recovery, name='password_recovery'),
     path('password_recovery/reset/<user>/<token>/', views.password_reset, name='password_reset'),
+    url(r'^producers/(?P<id>[0-9]*)$', views.get_producers, name="get_producers"),
 ]
