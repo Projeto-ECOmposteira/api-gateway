@@ -18,7 +18,7 @@ def register(request):
         params = "/api/user/register_market/"
     )
 
-    # Data should have first_name, last_name, owner_phone_number, comercial_name, cnpj, cep, phone_number, producer, email, password, password2
+    # Data should have first_name, last_name, owner_phone_number, comercial_name, cnpj, cep, phone_number, agricultural_producer, email, password, password2
 
     return api_redirect(url, request.data)
 
@@ -138,6 +138,27 @@ def get_producers(request, id):
         url = url + id + '/'
 
     return api_redirect_get(url, request.data)
+
+@api_view(["GET"])
+def material_types(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/material_types/"
+        )
+
+    return api_redirect_get(url, request.data)
+
+@api_view(["POST"])
+def register_material(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/register_material/"
+        )
+
+    # Data should have name, imageLink, materialType
+
+    return api_redirect(url, request.data)
+
 
 
 def api_redirect(url, data, header = None):
