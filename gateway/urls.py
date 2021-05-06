@@ -10,5 +10,7 @@ urlpatterns = [
     path('password_recovery/reset/<user>/<token>/', views.password_reset, name='password_reset'),
     path('register_material/', views.register_material, name='register_material'),
     path('material_types/', views.material_types, name='material_types'),
+    path('materials/', views.materials, name='materials_list'),
+    url(r'update_material/(?P<id>[A-Za-z0-9]+)$', views.update_material, name='update_material'),
     url(r'^producers/(?P<id>[0-9]*)$', views.get_producers, name="get_producers"),
 ]
