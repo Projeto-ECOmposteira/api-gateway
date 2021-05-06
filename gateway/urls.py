@@ -8,5 +8,6 @@ urlpatterns = [
     path('check_token/', views.check_token, name='check_token'),
     path('password_recovery/', views.password_recovery, name='password_recovery'),
     path('password_recovery/reset/<user>/<token>/', views.password_reset, name='password_reset'),
+    path('get_producer_supermarket/', views.get_producer_supermarket, name='get_producer_supermarket'),
     url(r'^producers/(?P<id>[0-9]*)$', views.get_producers, name="get_producers"),
 ]

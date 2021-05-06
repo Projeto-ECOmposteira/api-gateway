@@ -139,6 +139,15 @@ def get_producers(request, id):
 
     return api_redirect_get(url, request.data)
 
+@api_view(["GET"])
+def get_producer_supermarket(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/get_producer_supermarket/"
+        )
+
+    return api_redirect_get(url, request.data, request.headers)
+
 
 def api_redirect(url, data, header = None):
     try:
@@ -159,7 +168,10 @@ def api_redirect(url, data, header = None):
 
 def api_redirect_get(url, data, header = None):
     try:
-        response = requests.get(url)
+        if header:
+            response = requests.get(url, headers=header)
+        else:
+            response = requests.get(url)
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
