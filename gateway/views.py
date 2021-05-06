@@ -122,7 +122,7 @@ def password_reset(request, user, token):
         except Exception:
             return Response(response, status=status)
 
-    except:
+    except Exception:
         return Response(
             {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
@@ -190,7 +190,7 @@ def api_redirect(url, data, header = None):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
     except Exception:
         return Response(
@@ -204,7 +204,7 @@ def api_redirect_get(url, data, header = None):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
     except Exception:
         return Response(
@@ -218,7 +218,7 @@ def api_redirect_delete(url, data, header = None):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
     except Exception:
         return Response(
@@ -232,7 +232,7 @@ def api_redirect_put(url, data, header = None):
         try:
             response_json = response.json()
             return Response(data=response_json, status=response.status_code)
-        except:
+        except Exception:
             return Response(response, status=response.status_code)
     except Exception:
         return Response(
