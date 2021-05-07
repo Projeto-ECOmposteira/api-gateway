@@ -42,7 +42,7 @@ def check_token(request):
 
     # Data should have acces-token, refresh-token
 
-    response = api_redirect(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("acces-token"))})
+    response = api_redirect_get(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("acces-token"))})
 
     if response.status_code != 200:
         url = "{base_user_url}{params}".format(
@@ -188,6 +188,50 @@ def update_material(request, id):
         return api_redirect_delete(url, request.data)
 
     return api_redirect_put(url, request.data)
+
+@api_view(["POST"])
+def register_composter(request):
+    url = "{base_composter_url}{params}".format(
+            base_composter_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/register_composter/"
+        )
+
+    # Data should have supermarketId, name, macAddress, description
+
+    return api_redirect(url, request.data)
+
+@api_view(["PUT", "DELETE"])
+def update_composter(request, id):
+    url = "{base_composter_url}{params}{id}".format(
+            base_composter_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/update_composter/",
+            id = id
+        )
+    if request.method == "DELETE":
+        return api_redirect_delete(url, request.data)
+
+    return api_redirect_put(url, request.data)
+
+@api_view(["GET"])
+def get_producer_composters(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/get_producer_composters/"
+        )
+
+    get_producer_supermarket_url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/get_producer_supermarket/"
+        )
+    producer_supermarkets = api_redirect_get(get_producer_supermarket_url, None, request.headers)
+    try:
+        producer_supermarkets_json = json.dumps(producer_supermarkets.data)
+    except Exception:
+        return Response(
+            {'error': SERVER_COMMUNICATION_ERROR},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    return api_redirect(url, {'markets': producer_supermarkets_json})
 
 
 def api_redirect(url, data, header = None):
