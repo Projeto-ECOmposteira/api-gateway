@@ -138,6 +138,17 @@ def get_producers(request, id):
         url = url + id + '/'
 
     return api_redirect_get(url, request.data)
+    
+@api_view(["GET"])
+def get_supermarkets(request, id):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/supermarkets/"
+        )
+    if id:
+        url = url + id + '/'
+
+    return api_redirect_get(url, request.data)
 
 @api_view(["GET"])
 def get_producer_supermarket(request):
