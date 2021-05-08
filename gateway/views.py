@@ -244,6 +244,27 @@ def get_producer_composters(request):
         )
     return api_redirect(url, {'markets': producer_supermarkets_json})
 
+@api_view(["GET"])
+def get_composter_alerts(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/get_composter_alerts/"
+        )
+
+    get_producer_supermarket_url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/get_producer_supermarket/"
+        )
+    producer_supermarkets = api_redirect_get(get_producer_supermarket_url, None, request.headers)
+    try:
+        producer_supermarkets_json = json.dumps(producer_supermarkets.data)
+    except Exception:
+        return Response(
+            {'error': SERVER_COMMUNICATION_ERROR},
+            status=HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    return api_redirect(url, {'markets': producer_supermarkets_json})
+
 
 def api_redirect(url, data, header = None):
     try:
