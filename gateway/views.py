@@ -293,6 +293,8 @@ def api_redirect_get(url, data, header = None):
     print(header)
     try:
         if header:
+            header = {'Authorization': header['Authorization']}
+            print(':angry:', header)
             response = requests.get(url, headers=header)
             print(1, response)
         else:
