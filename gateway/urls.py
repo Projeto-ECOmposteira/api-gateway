@@ -14,6 +14,7 @@ urlpatterns = [
     path('materials/', views.materials, name='materials_list'),
     path('register_composter/', views.register_composter, name='register_composter'),
     path('get_producer_composters/', views.get_producer_composters, name='get_producer_composters'),
+    path('get_supermarket_composters/', views.get_supermarket_composters, name='get_supermarket_composters'),
     url(r'update_material/(?P<id>[A-Za-z0-9]+)$', views.update_material, name='update_material'),
     url(r'update_composter/(?P<id>[A-Za-z0-9]+)$', views.update_composter, name='update_composter'),
     url(r'^producers/(?P<id>[0-9]*)$', views.get_producers, name="get_producers"),

@@ -40,9 +40,9 @@ def check_token(request):
         params = "/api/user/"
     )
 
-    # Data should have acces-token, refresh-token
+    # Data should have access-token, refresh-token
 
-    response = api_redirect_get(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("acces-token"))})
+    response = api_redirect_get(url, None, {'Authorization': 'Bearer {token}'.format(token = request.data.get("access-token"))})
 
     if response.status_code != 200:
         url = "{base_user_url}{params}".format(
@@ -232,6 +232,15 @@ def get_producer_composters(request):
             status=HTTP_500_INTERNAL_SERVER_ERROR
         )
     return api_redirect(url, {'markets': producer_supermarkets_json})
+
+@api_view(["GET"])
+def get_supermarket_composters(request):
+    url = "{base_user_url}{params}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/get_supermarket_composters/"
+        )
+
+    return api_redirect(url, request.data)
 
 
 def api_redirect(url, data, header = None):
