@@ -157,6 +157,9 @@ def get_producer_supermarket(request):
             params = "/api/user/get_producer_supermarket/"
         )
 
+    print(request.headers)
+    print(request.data)
+
     return api_redirect_get(url, request.data, request.headers)
 
 @api_view(["GET"])
