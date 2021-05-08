@@ -157,10 +157,6 @@ def get_producer_supermarket(request):
             params = "/api/user/get_producer_supermarket/"
         )
 
-    print(request.headers)
-    print(request.data)
-    print(url)
-
     return api_redirect_get(url, request.data, request.headers)
 
 @api_view(["GET"])
@@ -288,27 +284,18 @@ def api_redirect(url, data, header = None):
         )
 
 def api_redirect_get(url, data, header = None):
-    print(url)
-    print(data)
-    print(header)
     try:
         if header:
             header = {'Authorization': header['Authorization']}
-            print(':angry:', header)
             response = requests.get(url, headers=header)
-            print(1, response)
         else:
             response = requests.get(url)
-            print(2, response)
         try:
             response_json = response.json()
-            print(3, response_json)
             return Response(data=response_json, status=response.status_code)
         except Exception:
-            print(4, 'exp')
             return Response(response, status=response.status_code)
     except Exception:
-        print(5, 'exp')
         return Response(
             {'error': SERVER_COMMUNICATION_ERROR},
             status=HTTP_500_INTERNAL_SERVER_ERROR
