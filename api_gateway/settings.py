@@ -68,6 +68,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'https://condescending-mcclintock-1495c6.netlify.app'
 )
 
 ROOT_URLCONF = 'api_gateway.urls'
