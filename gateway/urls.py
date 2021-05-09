@@ -17,5 +17,6 @@ urlpatterns = [
     path('get_supermarket_composters/', views.get_supermarket_composters, name='get_supermarket_composters'),
     url(r'update_material/(?P<id>[A-Za-z0-9]+)$', views.update_material, name='update_material'),
     url(r'update_composter/(?P<id>[A-Za-z0-9]+)$', views.update_composter, name='update_composter'),
+    url(r'get_composter_report/(?P<id>[A-Za-z0-9]+)$', views.get_composter_report, name='get_composter_report'),
     url(r'^producers/(?P<id>[0-9]*)$', views.get_producers, name="get_producers"),
 ]

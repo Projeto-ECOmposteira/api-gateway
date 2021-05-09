@@ -242,6 +242,17 @@ def get_supermarket_composters(request):
 
     return api_redirect(url, request.data)
 
+@api_view(["GET"])
+def get_composter_report(request, id):
+    url = "{base_user_url}{params}{id}".format(
+            base_user_url = config('COMPOSTER_BASE_URL'), 
+            params = "/api/composter/get_composter_report/",
+            id=id
+        )
+
+    return api_redirect_get(url, request.data)
+
+
 
 def api_redirect(url, data, header = None):
     try:
