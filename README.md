@@ -1,3 +1,12 @@
+<div>
+    <p align="center">
+    <img src='https://raw.githubusercontent.com/Projeto-ECOmposteira/documentacao/main/assets/img/logo/logo.png' alt="Projeto Kokama" width="25%"/>
+    </p> 
+    <h1 align="center">
+    Projeto ECOmposteira
+    </h1>
+</div>
+
 ## API Gateway
 
 A API Gateway é responsável por delegar as demandas vindas do front-end (interface) para os demais microsserviços disponíveis na aplicação.
