@@ -1,7 +1,26 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Projeto-ECOmposteira_api-gateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=Projeto-ECOmposteira_api-gateway)
-[![Maintainability](https://api.codeclimate.com/v1/badges/9f136b63b2056c9eb904/maintainability)](https://codeclimate.com/github/Projeto-ECOmposteira/api-gateway/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9f136b63b2056c9eb904/test_coverage)](https://codeclimate.com/github/Projeto-ECOmposteira/api-gateway/test_coverage)
+## API Gateway
 
-# api-gateway
+A API Gateway é responsável por delegar as demandas vindas do front-end (interface) para os demais microsserviços disponíveis na aplicação.
 
-[Documentação](https://github.com/Projeto-ECOmposteira/documentacao)
+## Rode o Backend com Docker
+
+### Dependências
+
+Inicialmente, instale localmente as seguintes dependências:
+
+1. Instale o [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/);
+2. Instale o [Docker Compose](https://docs.docker.com/compose/install/).
+
+### Arquivo de Configuração
+
+1. Crie um arquivo `.env` e preencha as variáveis de ambiente de acordo com os exemplos localizados nos arquivos `.env.example`.
+
+### Inicialização do Projeto
+
+1. Na pasta principal do projeto, construa e inicialize a aplicação com o comando:
+
+```bash
+sudo make
+```
+
+2. A API Gateway estará disponível em: `http://localhost:8000/`.
