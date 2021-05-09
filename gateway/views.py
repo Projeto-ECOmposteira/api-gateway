@@ -246,12 +246,21 @@ def get_producer_composters(request):
 
 @api_view(["GET"])
 def get_supermarket_composters(request):
+    get_pk_url = "{base_user_url}{params}".format(
+            base_user_url = config('USER_BASE_URL'), 
+            params = "/api/user/get_user_pk/"
+        )
+
+    get_pk_url_request = api_redirect_get(get_pk_url, None, request.headers)
+
+    print(get_pk_url_request.data)
+
     url = "{base_user_url}{params}".format(
             base_user_url = config('COMPOSTER_BASE_URL'), 
             params = "/api/composter/get_supermarket_composters/"
         )
 
-    return api_redirect(url, request.data)
+    return api_redirect(url, {'pk': get_pk_url_request.data})
 
 @api_view(["GET"])
 def get_composter_report(request, id):
